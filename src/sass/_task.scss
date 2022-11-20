@@ -1,0 +1,56 @@
+.search-form{
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1600px;
+  width: 100%;
+  padding: 10px;
+  background-color:darkslateblue;
+  border: solid 1px #212121;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 10;
+
+  &__input{
+    box-shadow: 0px 0px 0px 0px black;
+    border-radius: 4px;
+    border: darkslateblue;
+    border-top-right-radius: 0px ;
+    border-bottom-left-radius: 0px ;
+    transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:focus {
+      outline: none;
+      box-shadow: -2px 2px 10px 0px #212121;
+    }
+  }
+
+  &__btn{
+    border: #212121;
+    border-radius: 4px;
+    border-top-left-radius: 0px ;
+    border-bottom-right-radius: 0px ;
+    background-color:lightgray;
+    color: darkslateblue;
+    opacity: 1;
+    box-shadow: 0px 0px 0px 0px #212121;
+    transition: background-color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 500ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background-color:ghostwhite;
+      color:#212121;
+      opacity: 1;
+      box-shadow: 10px 0px 10px 0px #212121;
+    }
+  }
+}
+
+.gallery {
+  display: block;
+  height: 2000px;
+  background-color: aqua;
+}
