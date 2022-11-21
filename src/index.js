@@ -32,11 +32,9 @@ function makeSubmit(e) {
     inputValue = writeInputValue(e);
     if (inputValue === "") {
         Notiflix.Notify.failure('Pls typing anything...')
-    } else {
-
-        makeResult(page);
     }
-    // console.log(page)
+
+    makeResult(page);
 }
 
 function loadMore(e) {
@@ -65,65 +63,69 @@ async function makeResult(page) {
 }
 
 function makeMarkup(data) {
-    // console.log(data.hits[0])
     const allTotalHits = data.totalHits;
-    if (page === 1) {
-        if (allTotalHits === 0) {
-            Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
-            btnLoadOn()
+    // console.log(data.hits[0])
+    if (ref.searchInput.value) {
+        if (page === 1) {
+            if (allTotalHits === 0) {
+                Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+                btnLoadOff()
+            } else {
+                Notiflix.Notify.success(`Yuhu, we found ${allTotalHits} images`);
+                btnLoadOn()
+            }
         } else {
-            Notiflix.Notify.success(`Yuhu, we found ${allTotalHits} images`);
-            btnLoadOff()
+            const calculateQuantityImg = allTotalHits - 40 * (page-1);
+            if (calculateQuantityImg < 40) {
+                Notiflix.Notify.failure('Were sorry, but youve reached the end of search results.')
+                btnLoadOff()
+            } else {
+                Notiflix.Notify.success(`Yuhu, we found ${calculateQuantityImg} images`);
+                btnLoadOn()
+            }
+            // console.log(calculateQuantityImg)
         }
-    } else {
-        const calculateQuantityImg = allTotalHits - 40 * (page-1);
-        if (calculateQuantityImg < 40) {
-            Notiflix.Notify.failure('Were sorry, but youve reached the end of search results.')
-            btnLoadOn()
-        } else {
-            Notiflix.Notify.success(`Yuhu, we found ${calculateQuantityImg} images`);
-            btnLoadOff()
-        }
-        // console.log(calculateQuantityImg)
-    }
 
-    const markup = data.hits.map(({largeImageURL, webformatURL, tags, likes, views, comments, downloads})=>{
-        // console.log(largeImageURL)
-        return `
-        <div class="photo-card">
-        <div class="thumb">
-            <a class = gallery__item href = "${largeImageURL}">
-                <img class="card-img" src="${webformatURL}" alt="${tags}" loading="lazy"/>
-            </a>
-        </div>
-            <div class="info">
-                <p class="info-item">
-                    <b class="info-item-span">Likes:</b>
-                    ${likes}
-                </p>
-                <p class="info-item">
-                    <b class="info-item-span">Views:</b>
-                    ${views}
-                </p>
-                <p class="info-item">
-                    <b class="info-item-span">Comments:</b>
-                    ${comments}
-                </p>
-                <p class="info-item">
-                    <b class="info-item-span">Downloads:</b>
-                    ${downloads}
-                </p>
+        const markup = data.hits.map(({largeImageURL, webformatURL, tags, likes, views, comments, downloads})=>{
+            // console.log(largeImageURL)
+            return `
+            <div class="photo-card">
+            <div class="thumb">
+                <a class = gallery__item href = "${largeImageURL}">
+                    <img class="card-img" src="${webformatURL}" alt="${tags}" loading="lazy"/>
+                </a>
             </div>
-        </div>`
-    })
-    return ref.galleryRef.insertAdjacentHTML('beforeend', markup.join(''));
-}
+                <div class="info">
+                    <p class="info-item">
+                        <b class="info-item-span">Likes:</b>
+                        ${likes}
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item-span">Views:</b>
+                        ${views}
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item-span">Comments:</b>
+                        ${comments}
+                    </p>
+                    <p class="info-item">
+                        <b class="info-item-span">Downloads:</b>
+                        ${downloads}
+                    </p>
+                </div>
+            </div>`
+        })
 
-function btnLoadOn() {
-    ref.btnLoad.classList.add('visually-hidden');
+        return ref.galleryRef.insertAdjacentHTML('beforeend', markup.join(''));
+    }
+    return
 }
 
 function btnLoadOff() {
+    ref.btnLoad.classList.add('visually-hidden');
+}
+
+function btnLoadOn() {
     ref.btnLoad.classList.remove('visually-hidden')
 }
 
